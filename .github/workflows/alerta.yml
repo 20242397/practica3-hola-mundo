@@ -1,0 +1,25 @@
+name: Alerta ntfy.sh
+
+on:
+  push:
+    branches:
+      - main   # Se activa cada vez que subes código a main
+
+jobs:
+  notificar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: 🟢 Ejecutar Hola Mundo
+        run: node hola-mundo.js
+
+      - name: 🔔 Enviar notificación a ntfy.sh
+        run: |
+          curl -X POST https://ntfy.sh/devops-itla \
+            -H "Title: ✅ Nuevo Push en main" \
+            -H "Priority: high" \
+            -H "Tags: white_check_mark,github" \
+            -d "🚀 ${{ github.actor }} subió código al repositorio ${{ github.repository }} — rama main"
